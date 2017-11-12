@@ -12,7 +12,7 @@ public class TigerVNCGui {
 
 		final File f = new File(".dovnc");
 
-		JFrame frame = new JFrame();
+		JFrame frame = new JFrame("DigitalOcean Console");
 		JPanel panel = new JPanel();
 
 		GridBagConstraints c = new GridBagConstraints();
@@ -20,7 +20,7 @@ public class TigerVNCGui {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1;
 		c.gridy = 1;
-		panel.add(new JLabel("Droplet ID", JLabel.RIGHT), c);
+		panel.add(new JLabel("Link to Console", JLabel.RIGHT), c);
 		c.gridy = 2;
 		panel.add(new JLabel("Cookie", JLabel.RIGHT), c);
 		c.gridy = 3;
@@ -31,8 +31,9 @@ public class TigerVNCGui {
 		c.weightx = 1;
 		c.gridx = 2;
 		c.gridy = 1;
-		final JTextField tid = new JTextField();
-		panel.add(tid, c);
+		c.insets = new Insets(0, 10, 0, 0);
+		final JTextField tlink = new JTextField();
+		panel.add(tlink, c);
 		c.gridy = 2;
 		final JTextField tcookie = new JTextField();
 		panel.add(tcookie, c);
@@ -46,7 +47,7 @@ public class TigerVNCGui {
 		try {
 			if(f.exists()) {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
-				tid.setText(reader.readLine());
+				tlink.setText(reader.readLine());
 				tcookie.setText(reader.readLine());
 				taccept.setText(reader.readLine());
 				tuser.setText(reader.readLine());
@@ -63,7 +64,7 @@ public class TigerVNCGui {
 			public void actionPerformed(ActionEvent actionEvent) {
 				try {
 					FileOutputStream output = new FileOutputStream(f);
-					output.write((tid.getText() + "\n").getBytes(ConnectionTunnel.charset));
+					output.write((tlink.getText() + "\n").getBytes(ConnectionTunnel.charset));
 					output.write((tcookie.getText() + "\n").getBytes(ConnectionTunnel.charset));
 					output.write((taccept.getText() + "\n").getBytes(ConnectionTunnel.charset));
 					output.write((tuser.getText() + "\n").getBytes(ConnectionTunnel.charset));
@@ -104,7 +105,7 @@ public class TigerVNCGui {
 
 		frame.dispose();
 
-		String dropletId = tid.getText();
+		String link = tlink.getText();
 		String cookie = tcookie.getText();
 		String acceptLanguage = taccept.getText();
 		String userAgent = tuser.getText();
@@ -112,7 +113,7 @@ public class TigerVNCGui {
 		ServerSocket ss = new ServerSocket(0);
 		System.out.println("Listening on " + ss.getLocalPort());
 
-		ConnectionTunnel tunnel = new ConnectionTunnel(null, null, dropletId, cookie, acceptLanguage, userAgent);
+		ConnectionTunnel tunnel = new ConnectionTunnel(null, null, link, cookie, acceptLanguage, userAgent);
 
 		Process p1 = Runtime.getRuntime().exec(new String[]{"/usr/bin/vncpasswd", "-f"});
 		p1.getOutputStream().write(tunnel.password.getBytes(ConnectionTunnel.charset));

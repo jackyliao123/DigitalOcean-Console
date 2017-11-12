@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class TunnelServer {
 
-	public static String dropletId;
+	public static String link;
 	public static String cookie;
 	public static String acceptLanguage;
 	public static String userAgent;
@@ -21,7 +21,7 @@ public class TunnelServer {
 			if(!scanner.nextLine().toLowerCase().trim().equals("n")) {
 				try {
 					BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
-					dropletId = reader.readLine();
+					link = reader.readLine();
 					cookie = reader.readLine();
 					acceptLanguage = reader.readLine();
 					userAgent = reader.readLine();
@@ -34,8 +34,8 @@ public class TunnelServer {
 		}
 
 		if(!loaded) {
-			System.out.print("Droplet ID: ");
-			dropletId = scanner.nextLine();
+			System.out.print("Link to Console: ");
+			link = scanner.nextLine();
 			System.out.print("Cookie: ");
 			cookie = scanner.nextLine();
 			System.out.print("Accept-Language: ");
@@ -47,7 +47,7 @@ public class TunnelServer {
 			if(!scanner.nextLine().toLowerCase().trim().equals("n")) {
 				try {
 					FileOutputStream output = new FileOutputStream(f);
-					output.write((dropletId + "\n").getBytes(ConnectionTunnel.charset));
+					output.write((link + "\n").getBytes(ConnectionTunnel.charset));
 					output.write((cookie + "\n").getBytes(ConnectionTunnel.charset));
 					output.write((acceptLanguage + "\n").getBytes(ConnectionTunnel.charset));
 					output.write((userAgent + "\n").getBytes(ConnectionTunnel.charset));
@@ -69,8 +69,8 @@ public class TunnelServer {
 				new Thread() {
 					public void run() {
 						try {
-							ConnectionTunnel tunnel = new ConnectionTunnel(s.getInputStream(), s.getOutputStream(), dropletId, cookie, acceptLanguage, userAgent);
-							System.out.println("Password is: " + tunnel.password);
+							ConnectionTunnel tunnel = new ConnectionTunnel(s.getInputStream(), s.getOutputStream(), link, cookie, acceptLanguage, userAgent);
+							System.out.println("Password: " + tunnel.password);
 							tunnel.startTunnel();
 						} catch(IOException e) {
 							e.printStackTrace();

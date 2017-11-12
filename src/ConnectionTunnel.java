@@ -30,11 +30,11 @@ public class ConnectionTunnel extends WebSocketListener implements Runnable {
 	public String path = null;
 	public int port = 0;
 
-	public ConnectionTunnel(InputStream input, OutputStream output, String dropletId, String cookies, String acceptLanguage, String userAgent) throws IOException {
+	public ConnectionTunnel(InputStream input, OutputStream output, String link, String cookies, String acceptLanguage, String userAgent) throws IOException {
 		this.input = input;
 		this.output = output;
 
-		scrape(dropletId, cookies, acceptLanguage, userAgent);
+		scrape(link, cookies, acceptLanguage, userAgent);
 		connectWebsocket(cookies, userAgent);
 	}
 
@@ -44,7 +44,8 @@ public class ConnectionTunnel extends WebSocketListener implements Runnable {
 		} catch(IOException e) {
 			try {
 				output.close();
-				System.exit(0);
+				input.close();
+				wsProcessor.close();
 			} catch(Exception ex) {
 			}
 			e.printStackTrace();
@@ -73,8 +74,8 @@ public class ConnectionTunnel extends WebSocketListener implements Runnable {
 		return str.substring(ind + 1, nextInd);
 	}
 
-	public void scrape(String dropletId, String cookie, String acceptLanguage, String userAgent) throws IOException {
-		URLConnection connection = new URL("https://cloud.digitalocean.com/droplets/" + dropletId + "/console?no_layout=true").openConnection();
+	public void scrape(String link, String cookie, String acceptLanguage, String userAgent) throws IOException {
+		URLConnection connection = new URL(link).openConnection();
 		connection.addRequestProperty("Cookie", cookie);
 		connection.addRequestProperty("Accept-Language", acceptLanguage);
 		connection.addRequestProperty("User-Agent", userAgent);
