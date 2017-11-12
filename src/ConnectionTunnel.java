@@ -132,6 +132,7 @@ public class ConnectionTunnel extends WebSocketListener implements Runnable {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+		} finally {
 			try {
 				input.close();
 				output.close();

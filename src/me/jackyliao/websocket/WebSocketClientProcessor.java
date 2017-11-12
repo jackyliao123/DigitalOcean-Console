@@ -164,6 +164,7 @@ public class WebSocketClientProcessor {
 		isOpen = false;
 		listener.onClose();
 		client.close();
+		writeThread.interrupt();
 	}
 
 	public void sendText(String s) {
