@@ -2,12 +2,12 @@
 Unwraps DigitalOcean web console into raw VNC
 
 ### Input required
-- Droplet ID
+- Link to the console page
 - Cookie header
 - Accept-Language header
 - User-Agent header
 
-The headers can be extracted from the web browser on the DigitalOcean console page.
+The headers can be extracted from the DigitalOcean console page with the web browser's developer tools.
 
 ### Files
 `TigerVNCGUI` - A simple GUI made to launch TigerVNC on most Linux systems when connected to the DigitalOcean.
