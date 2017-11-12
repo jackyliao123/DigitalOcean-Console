@@ -3,9 +3,9 @@ Unwraps DigitalOcean web console into raw VNC
 
 ### Input required
 - Link to the console page
-- Cookie header
-- Accept-Language header
-- User-Agent header
+- `Cookie` header
+- `Accept-Language` header
+- `User-Agent` header
 
 The headers can be extracted from the DigitalOcean console page with the web browser's developer tools.
 
